@@ -96,6 +96,16 @@ Refer to the API documentation or Postman collection for more details on how to 
 The application implements exception handling to provide appropriate error responses. Custom exceptions have been defined to handle specific scenarios. Error responses include a code, message, and trace ID for easier debugging.
 
 ## Testing
+## POSTMAN Collection:
+curl --location --request GET 'http://localhost:8080/api/tools/checkout' \
+--header 'Content-Type: application/json' \
+--data '{
+    "toolCode": "LADW",
+    "rentalDays": 1,
+    "discountPercent": 1,
+    "checkoutDate": null
+}'
+
 Unit tests and integration tests have been provided to ensure the functionality of the application. You can run the tests using Maven:
 ### mvn test
 
