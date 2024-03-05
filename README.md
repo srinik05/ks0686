@@ -61,6 +61,9 @@ The application should now be running at http://localhost:8080/api/tools/checkou
 ## Usage
 To use the Rental App, you can send HTTP requests to the provided endpoints (see Endpoints) to check out tools and receive rental agreements.
 
+## Code Coverage
+Used SonarLint to check the coverage and coverage is 89%.
+
 ## API Endpoints
 The following API endpoints are available:
 
