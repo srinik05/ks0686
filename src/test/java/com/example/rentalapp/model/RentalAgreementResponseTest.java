@@ -42,7 +42,6 @@ public class RentalAgreementResponseTest {
 
     @Test
     public void testToString() {
-        // Arrange
         String toolCode = "LADW";
         ToolType toolType = ToolType.LADDER;
         String toolBrand = "Werner";

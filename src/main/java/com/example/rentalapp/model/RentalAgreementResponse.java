@@ -1,6 +1,7 @@
 package com.example.rentalapp.model;
 
 import com.example.rentalapp.constants.ToolType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -29,8 +30,10 @@ public class RentalAgreementResponse {
     @JsonProperty("rentalDays")
     private int rentalDays;
     @JsonProperty("checkoutDate")
+    @JsonFormat(pattern = "MM/dd/yy")
     private LocalDate checkoutDate;
     @JsonProperty("dueDate")
+    @JsonFormat(pattern = "MM/dd/yy")
     private LocalDate dueDate;
     @JsonProperty("dailyRentalCharge")
     private double dailyRentalCharge;
@@ -44,4 +47,24 @@ public class RentalAgreementResponse {
     private double discountAmount;
     @JsonProperty("finalCharge")
     private double finalCharge;
+
+    @JsonProperty("dailyRentalCharge")
+    public String getDailyRentalChargeWithCurrency() {
+        return String.format("$%.2f", dailyRentalCharge);
+    }
+
+    @JsonProperty("discountAmount")
+    public String getDiscountAmountWithCurrency() {
+        return String.format("$%.2f", discountAmount);
+    }
+
+    @JsonProperty("finalCharge")
+    public String getFinalChargeWithCurrency() {
+        return String.format("$%.2f", finalCharge);
+    }
+
+    @JsonProperty("preDiscountCharge")
+    public String getPreDiscountChargeWithCurrency() {
+        return String.format("$%.2f", preDiscountCharge);
+    }
 }

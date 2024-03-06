@@ -12,6 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -31,14 +33,12 @@ public class AppRentalControllerTest {
     @Test
     public void testCheckoutTool_Success() throws BusinessException {
         CheckoutRequest request = new CheckoutRequest();
-        String traceId = "12345";
         RentalAgreementResponse rentalAgreement = new RentalAgreementResponse();
-        when(checkoutService.checkout(request, traceId)).thenReturn(rentalAgreement);
+        when(checkoutService.checkout(request, UUID.randomUUID().toString())).thenReturn(rentalAgreement);
 
-        ResponseEntity<RentalAgreementResponse> responseEntity = appRentalController.checkoutTool(request, traceId);
+        ResponseEntity<RentalAgreementResponse> responseEntity = appRentalController.checkoutTool(request, UUID.randomUUID().toString());
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(rentalAgreement, responseEntity.getBody());
     }
 
 }

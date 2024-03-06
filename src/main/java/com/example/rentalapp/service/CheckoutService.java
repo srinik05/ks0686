@@ -1,13 +1,9 @@
 package com.example.rentalapp.service;
 
-
 import com.example.rentalapp.exception.BusinessException;
 import com.example.rentalapp.model.CheckoutRequest;
 import com.example.rentalapp.model.RentalAgreementResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 /**
  * CheckoutService interface defines the contract for checking out a tool.

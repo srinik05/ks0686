@@ -12,8 +12,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +36,7 @@ public class ToolValidatorTest {
         request.setDiscountPercent(20);
         request.setCheckoutDate(LocalDate.now());
         request.setToolCode("LADW");
-        assertDoesNotThrow(() -> toolValidator.validateRequest(request, "12345"));
+        assertDoesNotThrow(() -> toolValidator.validateRequest(request, UUID.randomUUID().toString()));
     }
 
     @Test
@@ -43,7 +45,7 @@ public class ToolValidatorTest {
         request.setRentalDays(0);
         request.setDiscountPercent(20);
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, "12345"));
+        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, UUID.randomUUID().toString()));
         List<Error> errors = exception.getErrors();
         assertEquals(1, errors.size());
         assertEquals(ErrorType.RENTALDAYS_INVALID.name(), errors.get(0).getCode());
@@ -57,7 +59,7 @@ public class ToolValidatorTest {
         request.setRentalDays(3);
         request.setDiscountPercent(150);
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, "12345"));
+        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, UUID.randomUUID().toString()));
         List<Error> errors = exception.getErrors();
         assertEquals(1, errors.size());
         assertEquals(ErrorType.DISCOUNTPERCENT_INVALID.name(), errors.get(0).getCode());
@@ -72,7 +74,7 @@ public class ToolValidatorTest {
         request.setDiscountPercent(20);
         request.setCheckoutDate(null);
 
-        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, "12345"));
+        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, UUID.randomUUID().toString()));
         List<Error> errors = exception.getErrors();
         assertEquals(1, errors.size());
         assertEquals(ErrorType.CHECKOUTDATE_INVALID.name(), errors.get(0).getCode());
@@ -83,19 +85,19 @@ public class ToolValidatorTest {
     @Test
     void validateToolNotFound_ValidToolCode_NoException() {
         List<Error> errorList = new ArrayList<>();
-        assertDoesNotThrow(() -> toolValidator.validateToolNotFound("LADW", errorList, "12345"));
+        assertDoesNotThrow(() -> toolValidator.validateToolNotFound("LADW", errorList, UUID.randomUUID().toString()));
     }
 
     @Test
     void validateToolNotFound_NullToolCode_NoException() {
         List<Error> errorList = new ArrayList<>();
-        assertDoesNotThrow(() -> toolValidator.validateToolNotFound(null, errorList, "12345"));
+        assertDoesNotThrow(() -> toolValidator.validateToolNotFound(null, errorList, UUID.randomUUID().toString()));
     }
 
     @Test
     void validateToolNotFound_NonAlphabeticToolCode_ExceptionThrown() {
         List<Error> errorList = new ArrayList<>();
-        assertDoesNotThrow(() -> toolValidator.validateToolNotFound("12345", errorList, "12345"));
+        assertDoesNotThrow(() -> toolValidator.validateToolNotFound("12345", errorList, UUID.randomUUID().toString()));
         assertFalse(errorList.isEmpty());
         assertEquals(ErrorType.TOOL_NOT_FOUND.name(), errorList.get(0).getCode());
         assertEquals(Constants.TOOL_NOT_FOUND_MESSAGE, errorList.get(0).getMessage());
@@ -124,5 +126,39 @@ public class ToolValidatorTest {
     public void testIsAlphabetic_EmptyToolCode_ReturnsTrue() {
         ToolValidator validator = new ToolValidator();
         assertTrue(validator.isAlphabetic(""));
+    }
+
+
+    //include JUnits to prove my solution is correct.
+    @Test
+    void validateRequest_InvalidDiscountPercent_Test1() {
+        CheckoutRequest request = new CheckoutRequest();
+        request.setToolCode("JAKR");
+        request.setRentalDays(3);
+        request.setDiscountPercent(101);
+        request.setCheckoutDate(LocalDate.parse("09/03/15", DateTimeFormatter.ofPattern("MM/dd/yy")));
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, UUID.randomUUID().toString()));
+        List<Error> errors = exception.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals(ErrorType.DISCOUNTPERCENT_INVALID.name(), errors.get(0).getCode());
+        assertEquals(Constants.DISCOUNTPERCENT_INVALID_MESSAGE, errors.get(0).getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), errors.get(0).getStatus());
+    }
+
+    @Test
+    void validateRequest_Test2() {
+        CheckoutRequest request = new CheckoutRequest();
+        request.setToolCode("JAKR");
+        request.setRentalDays(3);
+        request.setDiscountPercent(101);
+        request.setCheckoutDate(LocalDate.parse("09/03/15", DateTimeFormatter.ofPattern("MM/dd/yy")));
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> toolValidator.validateRequest(request, UUID.randomUUID().toString()));
+        List<Error> errors = exception.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals(ErrorType.DISCOUNTPERCENT_INVALID.name(), errors.get(0).getCode());
+        assertEquals(Constants.DISCOUNTPERCENT_INVALID_MESSAGE, errors.get(0).getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), errors.get(0).getStatus());
     }
 }

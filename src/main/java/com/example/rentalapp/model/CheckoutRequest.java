@@ -20,6 +20,6 @@ public class CheckoutRequest {
     private String toolCode;
     private int rentalDays;
     private int discountPercent;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "MM/dd/yy")
     private LocalDate checkoutDate;
 }

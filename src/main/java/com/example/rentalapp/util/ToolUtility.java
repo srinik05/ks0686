@@ -17,10 +17,10 @@ import java.util.Map;
 @Component
 public class ToolUtility {
 
-    private static final Map<String, Tool> tools = new HashMap<>();
+    private static Map<String, Tool> tools = new HashMap<>();
 
     // Initialize tools map with pre-defined tool entries
-    static {
+   public ToolUtility() {
         for (ToolEntry entry : ToolEntry.values()) {
             tools.put(entry.getToolCode(), new Tool(entry.getToolCode(), entry.getToolType(), entry.getBrand()));
         }
@@ -35,7 +35,6 @@ public class ToolUtility {
     public Tool getTool(String toolCode) {
         return tools.get(toolCode);
     }
-
     /**
      * Calculates the rental agreement for a tool based on the provided parameters.
      *
@@ -166,22 +165,4 @@ public class ToolUtility {
     private  boolean isLaborDay(LocalDate date) {
         return (date.getMonthValue() == 9 && date.getDayOfWeek() == DayOfWeek.MONDAY && date.getDayOfMonth() <= 7);
     }
-
-    /**
-     * Adjusts the date to the nearest weekday if it falls on Independence Day or Labor Day.
-     *
-     * @param date The date to adjust.
-     * @return The adjusted date.
-     */
-    public LocalDate adjustWeekendHoliday(LocalDate date) {
-        if (isIndependenceDay(date) || isLaborDay(date)) {
-            if (date.getDayOfWeek() == DayOfWeek.SATURDAY) {
-                return date.minusDays(1);
-            } else if (date.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                return date.plusDays(1);
-            }
-        }
-        return date;
-    }
-
 }

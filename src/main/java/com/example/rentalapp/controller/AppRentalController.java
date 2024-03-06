@@ -4,7 +4,6 @@ import com.example.rentalapp.exception.BusinessException;
 import com.example.rentalapp.model.CheckoutRequest;
 import com.example.rentalapp.service.CheckoutService;
 import com.example.rentalapp.model.RentalAgreementResponse;
-import com.fasterxml.jackson.annotation.JacksonInject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ public class AppRentalController {
      * @return ResponseEntity containing RentalAgreementResponse with checkout details
      * @throws BusinessException If there is a business exception during checkout process
      */
-    @GetMapping(value = "/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/checkout", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RentalAgreementResponse> checkoutTool(@RequestBody CheckoutRequest request, @RequestHeader(name = "X-TRACE-ID", required = false) String traceId) throws BusinessException {
         RentalAgreementResponse rentalAgreement = checkoutService.checkout(request, traceId);
         return new ResponseEntity<>(rentalAgreement, HttpStatus.OK);
