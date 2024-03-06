@@ -61,6 +61,9 @@ The application should now be running at http://localhost:8080/api/tools/checkou
 ## Usage
 To use the Rental App, you can send HTTP requests to the provided endpoints (see Endpoints) to check out tools and receive rental agreements.
 
+## Code Coverage
+Used SonarLint to check the coverage and coverage is 89%.
+
 ## API Endpoints
 The following API endpoints are available:
 
@@ -96,6 +99,36 @@ Refer to the API documentation or Postman collection for more details on how to 
 The application implements exception handling to provide appropriate error responses. Custom exceptions have been defined to handle specific scenarios. Error responses include a code, message, and trace ID for easier debugging.
 
 ## Testing
+## POSTMAN Collection:
+curl --location --request GET 'http://localhost:8080/api/tools/checkout' \
+--header 'Content-Type: application/json' \
+--data '{
+    "toolCode": "LADW",
+    "rentalDays": 1,
+    "discountPercent": 1,
+    "checkoutDate": null
+}'
+
 Unit tests and integration tests have been provided to ensure the functionality of the application. You can run the tests using Maven:
 ### mvn test
+
+## POSTMAN Scenarios
+### Postive case
+![image](https://github.com/srinik05/ks0686/assets/83652004/e92d8b1a-9787-4e60-9544-3034f7b01f35)
+
+### Negative Cases
+#### ToolCode is invalid
+![image](https://github.com/srinik05/ks0686/assets/83652004/7d67ad97-6cdb-4c27-9571-7e20bcc6fefe)
+
+#### RentalDays is invalid or null
+![image](https://github.com/srinik05/ks0686/assets/83652004/28d721d2-3484-4b6d-bbf3-db3625cd8f40)
+
+#### Discount Percent is not valid
+![image](https://github.com/srinik05/ks0686/assets/83652004/fba27b15-865e-43fe-9cc1-767bcefb0066)
+
+#### CheckoutDate is invalid
+![image](https://github.com/srinik05/ks0686/assets/83652004/af9781f2-3210-4f10-8db4-1a1a3f87d832)
+
+
+
 
